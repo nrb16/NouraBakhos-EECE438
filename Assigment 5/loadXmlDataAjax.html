@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+}
+th,td {
+  padding: 5px;
+}
+</style>
+<body>
+
+<h1>The XMLHttpRequest Object</h1>
+
+<button type="button" onclick="loadDoc()">Display all contacts</button>
+<br><br>
+<button type="button" onclick="loadDoc2(); notfound()">Display contact having input telephone number:</button>
+<input type="text" name="telephone_input">
+<br><br>
+<button type="button" onclick="loadDoc3(); notfound()">Display contacts having input profession:</button>
+<input type="text" name="profession_input">
+<br><br>
+<table id="demo"></table>
+
+<script>
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+  xhttp.open("GET", "contact_directory.xml", true);
+  xhttp.send();
+}
+
+function loadDoc2() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction2(this);
+    }
+  };
+  xhttp.open("GET", "contact_directory.xml", true);
+  xhttp.send();
+}
+
+function loadDoc3() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction3(this);
+    }
+  };
+  xhttp.open("GET", "contact_directory.xml", true);
+  xhttp.send();
+}
+
+
+function myFunction(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th>Name</th></th><th>Profession</th></th><th>Tel</th></th><th>Mobile</th></tr>";
+  var x = xmlDoc.getElementsByTagName("CONTACT");
+  for (i = 0; i <x.length; i++) { 
+    table += "<tr><td>" +
+      x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("TELEPHONE")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("MOBILE")[0].childNodes[0].nodeValue +
+      "</td></tr>" ;
+  }
+  document.getElementById("demo").innerHTML = table;
+}
+
+function myFunction2(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th>Name</th></th><th>Profession</th></th><th>Tel</th></th><th>Mobile</th></tr>";
+  var x = xmlDoc.getElementsByTagName("CONTACT");
+  var telephone_input = document.getElementsByName("telephone_input")[0].value;
+  for (i = 0; i <x.length; i++) { 
+    if(telephone_input == x[i].getElementsByTagName("TELEPHONE")[0].childNodes[0].nodeValue){
+      table += "<tr><td>" +
+      x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("TELEPHONE")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("MOBILE")[0].childNodes[0].nodeValue +
+      "</td></tr>" ;
+    }
+  }
+  document.getElementById("demo").innerHTML = table;
+}
+
+function myFunction3(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th>Name</th></th><th>Profession</th></th><th>Tel</th></th><th>Mobile</th></tr>";
+  var x = xmlDoc.getElementsByTagName("CONTACT");
+  var profession_input = document.getElementsByName("profession_input")[0].value;
+  for (i = 0; i <x.length; i++) { 
+    if(profession_input == x[i].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue){
+      table += "<tr><td>" +
+      x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("TELEPHONE")[0].childNodes[0].nodeValue +
+      "</td><td>" +
+      x[i].getElementsByTagName("MOBILE")[0].childNodes[0].nodeValue +
+      "</td></tr>" ;
+    }
+  }
+  document.getElementById("demo").innerHTML = table;
+}
+
+function notfound(){
+  var count = document.getElementById("demo").rows.length;
+  console.log(count);
+  //alert(count);
+  if(count == 1){
+    alert("Not found");
+  }
+}
+
+
+</script>
+
+</body>
+</html>
